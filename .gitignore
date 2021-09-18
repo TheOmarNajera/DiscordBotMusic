@@ -132,3 +132,4 @@ dmypy.json
 discordbot/
 Pipfile
 Pipfile.lock
+song.mp3
