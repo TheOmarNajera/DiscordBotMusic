@@ -10,6 +10,13 @@ token = str(config('bot_token'))
 
 bot = commands.Bot(command_prefix='>',description="This is a helper bot")
 
+def youtube(search):
+    query_string = parse.urlencode({'search_query': search})
+    html_content = request.urlopen('http://www.youtube.com/results?' + query_string)
+    search_results = re.findall(r"watch\?v=(\S{11})", html_content.read().decode())
+    url = 'https://www.youtube.com/watch?v=' + search_results[0]
+    return url
+
 @bot.command()
 async def play(ctx, url : str):
     song_there = os.path.isfile("song.mp3")
@@ -37,6 +44,12 @@ async def play(ctx, url : str):
         }],
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        patron = r"(https:\/\/www\.youtube\.com\/watch\?v=(\S{11}))"
+        if re.match(patron,url):
+            pass
+        else:
+            url = youtube(url)
+            
         ydl.download([url])
     for file in os.listdir("./"):
         if file.endswith(".mp3"):
@@ -84,16 +97,6 @@ async def info(ctx):
     embed.add_field(name="Server ID", value=f"{ctx.guild.id}")
     embed.set_thumbnail(url=f"{ctx.guild.icon_url}")
     await ctx.send(embed=embed)
-
-@bot.command()
-async def youtube(ctx, *, search):
-    query_string = parse.urlencode({'search_query': search})
-    html_content = request.urlopen('http://www.youtube.com/results?' + query_string)
-    # print(html_content.read().decode())
-    search_results = re.findall(r"watch\?v=(\S{11})", html_content.read().decode())
-    print(search_results)
-    # I will put just the first result, you can loop the response to show more results
-    await ctx.send('https://www.youtube.com/watch?v=' + search_results[0])
 
 # Events
 @bot.event
