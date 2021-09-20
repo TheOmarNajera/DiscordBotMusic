@@ -8,7 +8,7 @@ import youtube_dl
 
 token = str(config('bot_token'))
 
-bot = commands.Bot(command_prefix='>',description="This is a helper bot")
+bot = commands.Bot(command_prefix='!',description="This is a helper bot")
 
 def youtube(search):
     query_string = parse.urlencode({'search_query': search})
@@ -49,7 +49,7 @@ async def play(ctx, url : str):
             pass
         else:
             url = youtube(url)
-            
+
         ydl.download([url])
     for file in os.listdir("./"):
         if file.endswith(".mp3"):

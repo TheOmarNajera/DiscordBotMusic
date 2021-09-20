@@ -130,6 +130,4 @@ dmypy.json
 
 # virtual enviroment
 discordbot/
-Pipfile
-Pipfile.lock
 song.mp3
