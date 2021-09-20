@@ -52,6 +52,8 @@ async def play(ctx,*,url):
         else:
             url = youtube(url)
 
+        await ctx.send("Playing: " + url)
+
         ydl.download([url])
     for file in os.listdir("./"):
         if file.endswith(".mp3"):
@@ -63,6 +65,7 @@ async def leave(ctx):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     if voice.is_connected():
         await voice.disconnect()
+        await ctx.send("Bye, bye!")
     else:
         await ctx.send("The bot is not connected to a voice channel.")
 
@@ -71,6 +74,7 @@ async def pause(ctx):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     if voice.is_playing():
         voice.pause()
+        await ctx.send("The music is waiting that you resume the song!")
     else:
         await ctx.send("Currently no audio is playing.")
 
@@ -79,6 +83,7 @@ async def resume(ctx):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     if voice and voice.is_paused():
         voice.resume()
+        await ctx.send("Playing the song!")
     else:
         await ctx.send("The audio is not paused.")
 
@@ -87,6 +92,7 @@ async def stop(ctx):
     voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
     if voice:
         voice.stop()
+        await ctx.send("Oh, stop!!")
     else:
         await ctx.send("Currently no audio is playing.")
 
